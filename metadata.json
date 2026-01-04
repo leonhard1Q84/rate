@@ -1,0 +1,5 @@
+{
+  "name": "租金费率交互优化",
+  "description": "Vehicle rental rate management dashboard with multi-step wizard for configuring rule conditions and pricing.",
+  "requestFramePermissions": []
+}
