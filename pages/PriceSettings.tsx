@@ -1,6 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import { DurationRange, CarPriceRow } from '../types';
-import { Check, Info, Settings, Filter } from 'lucide-react';
+import { Check, Info, Settings, Filter, ArrowRight, Calendar } from 'lucide-react';
 import { BulkPriceModal } from '../components/BulkPriceModal';
 
 interface PriceSettingsProps {
@@ -111,31 +111,81 @@ export const PriceSettings: React.FC<PriceSettingsProps> = ({ onBack, onCancel }
       </div>
 
       <div className="bg-white p-6 rounded shadow-sm border border-gray-200 flex-1 flex flex-col">
-        {/* Info Header */}
-        <div className="grid grid-cols-3 gap-8 text-sm mb-8 px-4">
-           <div><span className="text-gray-500">下单时间：</span> -- </div>
-           <div><span className="text-gray-500">用车时间：</span> 2026/01/16 -- 2026/01/31</div>
-           <div><span className="text-gray-500">客源地：</span> 无限制</div>
+        {/* Info Header - Support for Multiple Paired Time Groups with Day of Week included */}
+        <div className="grid grid-cols-1 gap-6 text-sm mb-8 px-4">
+           {/* Basic Info Row */}
+           <div className="flex items-center gap-12">
+              <div><span className="text-gray-500">规则名称：</span> <span className="font-medium text-gray-800">新千岁机场1.16-1.31</span></div>
+              <div><span className="text-gray-500">客源地：</span> 无限制</div>
+           </div>
+
+           {/* Time Groups Row */}
            <div>
-             <span className="text-gray-500">用车租期：</span>
-             <span className="inline-flex gap-4 ml-2 align-middle">
-               {['每周一', '每周二', '每周三', '每周四', '每周五', '每周六', '每周日'].map(d => (
-                 <label key={d} className="flex items-center gap-1.5 text-xs text-gray-500">
-                    <input type="checkbox" checked disabled className="w-3.5 h-3.5 text-blue-600 rounded border-gray-300 cursor-not-allowed" />
-                    {d}
-                 </label>
-               ))}
-             </span>
+              <div className="text-gray-500 mb-3 font-medium flex items-center gap-2">
+                 适用时间段
+              </div>
+              <div className="space-y-3">
+                 {/* Item 1 */}
+                 <div className="bg-white border border-gray-200 rounded-lg p-4 shadow-sm hover:border-blue-200 transition-colors">
+                    <div className="flex items-center gap-4 mb-3">
+                        <div className="flex items-center gap-2 bg-gray-50 px-2 py-1 rounded">
+                           <span className="text-gray-500 text-xs">下单时间:</span>
+                           <span className="text-gray-600 font-medium">不限</span>
+                        </div>
+                        <ArrowRight size={14} className="text-gray-300" />
+                        <div className="flex items-center gap-2 bg-blue-50 px-2 py-1 rounded border border-blue-100">
+                           <Calendar size={12} className="text-blue-500" />
+                           <span className="text-gray-500 text-xs">用车时间:</span>
+                           <span className="font-medium text-blue-700">2026/01/16 - 2026/01/31</span>
+                        </div>
+                    </div>
+                    <div className="flex items-center gap-2 pl-1">
+                        <span className="text-gray-400 text-xs">适用租期:</span>
+                        <div className="flex gap-2">
+                            {['周一', '周二', '周三', '周四', '周五', '周六', '周日'].map(d => (
+                                <span key={d} className="text-xs text-gray-600 bg-gray-50 border border-gray-100 px-2 py-0.5 rounded">
+                                    {d}
+                                </span>
+                            ))}
+                        </div>
+                    </div>
+                 </div>
+
+                 {/* Item 2 (Mock for demonstration) */}
+                 <div className="bg-white border border-gray-200 rounded-lg p-4 shadow-sm hover:border-blue-200 transition-colors">
+                    <div className="flex items-center gap-4 mb-3">
+                        <div className="flex items-center gap-2 bg-gray-50 px-2 py-1 rounded">
+                           <span className="text-gray-500 text-xs">下单时间:</span>
+                           <span className="text-gray-800 font-medium">2025/11/01 - 2025/11/30</span>
+                        </div>
+                        <ArrowRight size={14} className="text-gray-300" />
+                        <div className="flex items-center gap-2 bg-blue-50 px-2 py-1 rounded border border-blue-100">
+                           <Calendar size={12} className="text-blue-500" />
+                           <span className="text-gray-500 text-xs">用车时间:</span>
+                           <span className="font-medium text-blue-700">2026/02/01 - 2026/02/28</span>
+                        </div>
+                    </div>
+                    <div className="flex items-center gap-2 pl-1">
+                        <span className="text-gray-400 text-xs">适用租期:</span>
+                        <div className="flex gap-2">
+                            {['周六', '周日'].map(d => (
+                                <span key={d} className="text-xs text-blue-600 bg-blue-50 border border-blue-100 px-2 py-0.5 rounded font-medium">
+                                    {d}
+                                </span>
+                            ))}
+                        </div>
+                    </div>
+                 </div>
+              </div>
            </div>
         </div>
 
-        {/* Requirements 3 & 4: Filters and Actions */}
+        {/* Filters and Actions */}
         <div className="flex flex-col gap-4 mb-4">
            <h3 className="border-l-4 border-black pl-3 text-sm font-bold text-gray-800">租金定价</h3>
            
            <div className="flex items-center justify-between bg-gray-50 p-3 rounded">
               <div className="flex items-center gap-6">
-                 {/* Existing checkboxes from screenshot */}
                  <label className="flex items-center gap-2 text-sm text-gray-600">
                     <input type="checkbox" className="rounded" /> 按SIPP Code 批量设置
                  </label>
@@ -154,9 +204,9 @@ export const PriceSettings: React.FC<PriceSettingsProps> = ({ onBack, onCancel }
                     </select>
                  </div>
 
-                 {/* Requirement 3: Car Group Filter (Multi-select simulation) */}
+                 {/* Car Group Filter - label updated */}
                  <div className="flex items-center gap-2">
-                    <span className="text-sm text-gray-600 font-bold text-blue-600">车型组(多选):</span>
+                    <span className="text-sm text-gray-600 font-bold text-blue-600">车型组:</span>
                     <div className="relative group">
                        <button className="border border-gray-300 rounded px-2 py-1 text-sm w-32 bg-white text-left flex justify-between items-center">
                           {selectedCarGroups.length > 0 ? `${selectedCarGroups.length} 已选` : '请选择车型组'}
@@ -181,9 +231,9 @@ export const PriceSettings: React.FC<PriceSettingsProps> = ({ onBack, onCancel }
                     </div>
                  </div>
 
-                 {/* SIPP Code Filter (Multi-select) */}
+                 {/* SIPP Code Filter - label updated */}
                  <div className="flex items-center gap-2">
-                    <span className="text-sm text-gray-600 font-bold text-blue-600">SIPP Code(多选):</span>
+                    <span className="text-sm text-gray-600 font-bold text-blue-600">SIPP Code:</span>
                     <div className="relative group">
                        <button className="border border-gray-300 rounded px-2 py-1 text-sm w-36 bg-white text-left flex justify-between items-center">
                           {selectedSippCodes.length > 0 ? `${selectedSippCodes.length} 已选` : '请选择SIPP'}
@@ -209,7 +259,7 @@ export const PriceSettings: React.FC<PriceSettingsProps> = ({ onBack, onCancel }
                  </div>
               </div>
 
-              {/* Requirement 4: Batch Actions - Merged Button */}
+              {/* Bulk Actions */}
               <div className="flex items-center gap-2">
                 <button 
                   onClick={openBulkSettings}
